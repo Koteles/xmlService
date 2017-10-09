@@ -1,13 +1,14 @@
 package com.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Properties;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.util.StringTokenizer;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 public class Main {
  
@@ -17,56 +18,95 @@ public class Main {
      * @param name
      * @param age
      */
-    public static void createXml(String name, int age, int id) {
+    public static void createXml(String name, int age) {
+    	
+    	IDGenerator generator = IDGenerator.getInstance();
+    	String id = Integer.toString(generator.getId());
+    	generator.setId(generator.getId()+1);
     	
     	Student stu = new Student();
     	stu.setAge(age);
     	stu.setName(name);
     	stu.setId(id);
     	
-    	XStream xstream = new XStream(new DomDriver());
-    	xstream.alias("students", Student.class);
-    	String xml = xstream.toXML(stu);
-    	System.out.println(xml);
-    	generateXMLFile(xml, id);
+    	Marshaller jaxbMarshaller = null;
+    	try {
+    		JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
+    		jaxbMarshaller = jaxbContext.createMarshaller();
+    		// output pretty printed
+    		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    	}
+    	catch (JAXBException e) {
+    		e.printStackTrace();
+    	      }
+
+    	generateXMLFile(jaxbMarshaller, id, stu);
+	
     }
     
-    public static void generateXMLFile(String xml, int id)  {
+    public static void generateXMLFile(Marshaller jaxbMarshaller, String id, Student student)  {
+    	
     	
     	Properties p = new Properties();   	
-    	PrintWriter print = null;
+    	ClassLoader loader = Thread.currentThread().getContextClassLoader();
     	
     	InputStream input = null;
+    	
     	try {
-    		input = new FileInputStream("D:\\dataConfig.properties");
-    		p.load(input);
-    		String path = p.getProperty("path");
-    		String pathToFiles = p.getProperty("pathToFiles");
+    	
+    		input = loader.getResourceAsStream("config.properties");
     		
-    		File folder = new File(pathToFiles);
+    		p.load(input);
+    		
+    		String pathToFile = p.getProperty("filenameFormat");     //D:\Students\Files\student-%s-data.xml -> is with only one backslash
+    		
+    		pathToFile = String.format(pathToFile, id);  
+    		
+    		StringTokenizer st = new StringTokenizer(pathToFile,"\\");
+    		
+    		StringBuilder sb = new StringBuilder();
+    		
+    		while(st.hasMoreTokens()) {
+    			
+    			sb.append(st.nextToken() + "\\\\");
+    		}
+   		
+    		String arr = sb.toString();		//D:\\Students\\Files\\student-%s-data.xml -> I added two backslashes
+    		
+    		String[] strArr = arr.split("\\\\");
+    		
+    		strArr = Arrays.copyOf(strArr, strArr.length-1);	
+    		
+    		String pathToFolder = "";
+    		
+    		for(String s : strArr) {
+    			
+    			pathToFolder+=s + "\\";		//D:\\Students\\Files\\
+    			
+    		}
+    		
+    		File folder = new File(pathToFolder);
+    		
     		if(!(folder.exists() && folder.isDirectory())) { 	//if the folder does not exists, create it
     			
     			folder.mkdir();
     			
     		}
     		
-    		File file = new File(path+id+".xml");
+    		File file = new File(pathToFile+".xml");
+    		jaxbMarshaller.marshal(student, file);
+    		jaxbMarshaller.marshal(student, System.out);
+
     		
-    		print = new PrintWriter(file);
-    		
-    		print.write(xml);
-    		print.flush();
-    		print.close();
     	}
     
     	catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	finally {
-    		print.close();
-    	}
-    } 
-    
+    	catch (JAXBException e) {
+    		e.printStackTrace();
+    	      }
+    }     
     
 }

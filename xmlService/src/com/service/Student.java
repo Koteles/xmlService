@@ -2,15 +2,18 @@ package com.service;
 
 import java.io.Serializable;
 
-public class Student implements Serializable {
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Student {
 	
 	/**
-	 * 	Model class for student
+	 * 	Model class for Student
 	 */
-	private static final long serialVersionUID = 1L;
 
 
-	private int id;
+	private String id;
 
 
 	private String name;
@@ -18,12 +21,12 @@ public class Student implements Serializable {
 
 	private int age;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
-
-	public void setId(int id) {
+	@XmlElement
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -31,7 +34,7 @@ public class Student implements Serializable {
 		return name;
 	}
 	
-
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -40,7 +43,7 @@ public class Student implements Serializable {
 		return age;
 	}
 
-
+	@XmlElement
 	public void setAge(int age) {
 		this.age = age;
 	}
