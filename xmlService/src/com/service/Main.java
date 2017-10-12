@@ -10,6 +10,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import com.model.Student;
+
+
 public class Main {
  
     /**
@@ -30,7 +33,9 @@ public class Main {
     	stu.setId(id);
     	
     	Marshaller jaxbMarshaller = null;
+    	
     	try {
+    		
     		JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
     		jaxbMarshaller = jaxbContext.createMarshaller();
     		// output pretty printed

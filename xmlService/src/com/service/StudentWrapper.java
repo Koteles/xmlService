@@ -1,7 +1,6 @@
-package com.service;
+ package com.service;
 
 import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,14 +10,16 @@ import javax.faces.component.html.HtmlInputText;
 @SessionScoped
 public class StudentWrapper implements Serializable {
 
-	private HtmlInputText inputComponent = new HtmlInputText();
+	private HtmlInputText ageInput = new HtmlInputText();
+	private HtmlInputText nameInput = new HtmlInputText();
 	private static final long serialVersionUID = 1L;
-	private String name;
+	private String name = "Student name";
 	private int age = 1;
 	
 	@PostConstruct
     public void init(){
-      inputComponent.setValue(age);
+		ageInput.setValue(age);
+		nameInput.setValue(name);
     }
 	
 	public String addXML() {
@@ -43,12 +44,20 @@ public class StudentWrapper implements Serializable {
 		this.age = age;
 	}
 
-	public HtmlInputText getInputComponent() {
-		return inputComponent;
+	public HtmlInputText getAgeInput() {
+		return ageInput;
 	}
 
-	public void setInputComponent(HtmlInputText inputComponent) {
-		this.inputComponent = inputComponent;
+	public void setAgeInput(HtmlInputText ageInput) {
+		this.ageInput = ageInput;
+	}
+
+	public HtmlInputText getNameInput() {
+		return nameInput;
+	}
+
+	public void setNameInput(HtmlInputText nameInput) {
+		this.nameInput = nameInput;
 	}
 
 }

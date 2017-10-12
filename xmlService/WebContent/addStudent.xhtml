@@ -11,13 +11,13 @@
 
 				<h:outputLabel value="Enter student name:">
 				</h:outputLabel>
-				<h:inputText id="txtName" value="#{studentWrapper.name}"></h:inputText>
+				<h:inputText id="txtName" value="#{studentWrapper.name}" binding="#{studentWrapper.nameInput}"></h:inputText>
 
 				<br></br>
 
 				<h:outputLabel value="Enter student age:">
 				</h:outputLabel>
-				<h:inputText id="txtYear" value="#{studentWrapper.age}" binding="#{studentWrapper.inputComponent}"></h:inputText>
+				<h:inputText id="txtYear" value="#{studentWrapper.age}" binding="#{studentWrapper.ageInput}"></h:inputText>
 
 				<br></br>
 
