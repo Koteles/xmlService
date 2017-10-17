@@ -22,8 +22,7 @@ public class StudentWrapper implements Serializable {
 		nameInput.setValue(name);
     }
 	
-	public String addXML() {
-
+	public String addXML() {		
 		Main.createXml(name, age);
 		return "success";
 	}
