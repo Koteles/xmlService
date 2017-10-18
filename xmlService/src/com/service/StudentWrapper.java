@@ -6,6 +6,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
 
+import com.validation.ValidAge;
+
+/**
+
+ * This class is the Java Bean class
+
+ *
+
+ */
+
 @ManagedBean
 @SessionScoped
 public class StudentWrapper implements Serializable {
@@ -14,6 +24,9 @@ public class StudentWrapper implements Serializable {
 	private HtmlInputText nameInput = new HtmlInputText();
 	private static final long serialVersionUID = 1L;
 	private String name = "Student name";
+	
+	//custom bean validation constraint annotation
+	@ValidAge
 	private int age = 1;
 	
 	@PostConstruct

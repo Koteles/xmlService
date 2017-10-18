@@ -9,6 +9,14 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+/**
+
+ * Validator class for the "name" field of the managed bean
+
+ *
+
+ */
+
 @FacesValidator("com.validation.NameValidator")
 public class NameValidator implements Validator {
 

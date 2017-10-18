@@ -15,11 +15,13 @@ import com.model.Student;
 public class Main {
 
 	/**
-	 * Create a new Student.
-	 * 
-	 * @param name
-	 * @param age
+
+	 * This class creates XML files from student objects
+
+	 *
+
 	 */
+	
 	public static void createXml(String name, int age) {
 
 		IDGenerator generator = IDGenerator.getInstance();

@@ -22,9 +22,9 @@
 					<h:outputLabel value="Enter student age:">
 					</h:outputLabel>
 					<h:inputText id="txtAge" value="#{studentWrapper.age}"
-						binding="#{studentWrapper.ageInput}" converterMessage="Please enter only digits for the age of the student">
-						<f:convertNumber integerOnly="true"/>
-						<f:validator validatorId="com.validation.AgeValidator" />
+						binding="#{studentWrapper.ageInput}" >
+					
+						
 					</h:inputText>
 
 					<h:commandButton id="submit" value="submit"

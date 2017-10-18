@@ -4,6 +4,13 @@ package com.service;
 
 public class IDGenerator {
 
+	/**
+
+	 * This class generates automatically IDs for the students
+
+	 *
+
+	 */
 	
 	private static int id = 1;
 	

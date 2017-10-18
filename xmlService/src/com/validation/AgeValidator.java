@@ -9,6 +9,14 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+/**
+
+ * Validator class for the "age" field of the managed bean. This class is not used for the moment, bean validation is used instead
+
+ *
+
+ */
+
 @FacesValidator("com.validation.AgeValidator")
 public class AgeValidator implements Validator {
 
