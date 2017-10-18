@@ -22,9 +22,8 @@
 					<h:outputLabel value="Enter student age:">
 					</h:outputLabel>
 					<h:inputText id="txtAge" value="#{studentWrapper.age}"
-						binding="#{studentWrapper.ageInput}" >
-					
-						
+						binding="#{studentWrapper.ageInput}" >	
+						<f:converter converterId="com.converters.AgeConvertion"></f:converter>
 					</h:inputText>
 
 					<h:commandButton id="submit" value="submit"
