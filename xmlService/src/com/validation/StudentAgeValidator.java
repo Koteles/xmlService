@@ -22,7 +22,7 @@ public class StudentAgeValidator implements ConstraintValidator<ValidAge, Intege
 	@Override
 	public boolean isValid(Integer age, ConstraintValidatorContext arg1) {
 
-		if(age < 17 || age > 120) {
+		if(age < 17 || age > 80) {
 			return false;
 		}
 		

@@ -1,5 +1,6 @@
 package com.service;
 
+
 // Singleton class using Lazy Initialization
 
 public class IDGenerator {

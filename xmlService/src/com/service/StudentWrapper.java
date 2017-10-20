@@ -1,10 +1,12 @@
  package com.service;
 
 import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
+import javax.inject.Inject;
 
 import com.validation.ValidAge;
 
@@ -29,6 +31,9 @@ public class StudentWrapper implements Serializable {
 	@ValidAge
 	private int age = 1;
 	
+	@Inject
+	private Main main;
+	
 	@PostConstruct
     public void init(){
 		ageInput.setValue(age);
@@ -36,7 +41,7 @@ public class StudentWrapper implements Serializable {
     }
 	
 	public String addXML() {		
-		Main.createXml(name, age);
+		main.createXml(name, age);
 		return "success";
 	}
 

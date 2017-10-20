@@ -1,11 +1,11 @@
 package com.service;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Properties;
+
 import java.util.StringTokenizer;
+
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -15,29 +15,33 @@ import com.model.Student;
 public class Main {
 
 	/**
-
+	 * 
 	 * This class creates XML files from student objects
-
 	 *
-
+	 * 
+	 * 
 	 */
 	
-	public static void createXml(String name, int age) {
+	@Inject 
+	private static String pathToFile;
+	
+	public void createXml(String name, int age) {
 
-		IDGenerator generator = IDGenerator.getInstance();
-		String id = Integer.toString(generator.getId());
+
+		final IDGenerator generator = IDGenerator.getInstance();
+		final String id = Integer.toString(generator.getId());
 		generator.setId(generator.getId() + 1);
 
-		Student stu = new Student();
-		stu.setAge(age);
-		stu.setName(name);
-		stu.setId(id);
+		final Student student = new Student();
+		student.setAge(age);
+		student.setName(name);
+		student.setId(id);
 
 		Marshaller jaxbMarshaller = null;
 
 		try {
 
-			JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
+			final JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
 			jaxbMarshaller = jaxbContext.createMarshaller();
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -45,25 +49,14 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		generateXMLFile(jaxbMarshaller, id, stu);
+		generateXMLFile(jaxbMarshaller, id, student);
 
 	}
 
 	public static void generateXMLFile(Marshaller jaxbMarshaller, String id, Student student) {
 
-		Properties p = new Properties();
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-		InputStream input = null;
 
 		try {
-
-			input = loader.getResourceAsStream("config.properties");
-
-			p.load(input);
-
-			String pathToFile = p.getProperty("filenameFormat"); // D:\Students\Files\student-%s-data.xml -> is with
-																	// only one backslash
 
 			pathToFile = String.format(pathToFile, id);
 
@@ -104,10 +97,10 @@ public class Main {
 
 		}
 
-		catch (IOException e) {
+		/*catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JAXBException e) {
+		}*/ catch (JAXBException e) {
 			e.printStackTrace();
 		}
 	}
