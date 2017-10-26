@@ -29,7 +29,7 @@ public class StudentWrapper implements Serializable {
 	
 	//custom bean validation constraint annotation
 	@ValidAge
-	private int age = 1;
+	private int age = 18;
 	
 	@Inject
 	private Main main;
