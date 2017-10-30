@@ -10,8 +10,11 @@
 		<section>
 			<h:messages style="color:red"/> 
 			<h:form>
-				<h:panelGrid columns="2" styleClass="form-grid"
-					columnClasses="form-column-label,form-column-input">
+				<h:panelGrid id="panel" columns="2">
+					<f:facet name="header">
+						<h:outputText value="Add a student to your university" />
+					</f:facet>
+					
 					<h:outputLabel value="Enter student name:">
 					</h:outputLabel>
 					<h:inputText id="txtName" value="#{studentWrapper.name}"

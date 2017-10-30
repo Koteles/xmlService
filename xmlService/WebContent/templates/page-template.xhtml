@@ -7,19 +7,17 @@
 <f:view contentType="text/html">
     <h:head>
         <meta charset="UTF-8"/>
-        <title>Admin Page</title>
+        <title><ui:insert name="title">Admin page</ui:insert></title>
         <link rel="stylesheet" href="resources/default.css"/>
     </h:head>
     <h:body>
         
         <ui:insert name="panel-top">
         <header>
-            <h1>Welcome administrator!</h1>
+            <h1><ui:insert name="header">Welcome administrator!</ui:insert></h1>
         </header>
-            <section>                
-                <p>Add a student to your University!</p>
-            </section>
         </ui:insert>
+        
         <ui:insert name="panel-main">
             <section>
                 <h1>Main Panel</h1>
