@@ -5,7 +5,8 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j">
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="title">Upload page</ui:define>
@@ -21,16 +22,20 @@
 					action="#{fileWrapper.processXLSX}"></h:commandButton>
 				<p:separator />
 				<h:panelGroup>
-					<ul>
+					
 						<ui:repeat value="#{fileWrapper.myMap.keySet().toArray()}" 
 							var="key">
 							<b>#{key}</b>
+							<br />
 							<ui:repeat var="list" value="#{fileWrapper.myMap[key]}">
-								
-								<p>#{list}</p>
+							<ui:repeat var="items" value="#{list}">							
+								#{items}			
+							</ui:repeat>
+							<br />										
 							</ui:repeat>	
+							<br />	
 						</ui:repeat>
-					</ul>
+					
 				</h:panelGroup>
 			</h:form>
 		</section>
