@@ -26,6 +26,10 @@
 		<param-name>primefaces.UPLOADER</param-name>
 		<param-value>auto</param-value>
 	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>rocket</param-value>
+	</context-param>
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>

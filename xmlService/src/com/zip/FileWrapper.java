@@ -12,18 +12,23 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
+
+import com.service.HttpURLConnectionExample;
 
 /**
  * 
  * This class is the Java Bean class
  *
- * 
  * 
  */
 
@@ -35,29 +40,46 @@ public class FileWrapper implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private UploadedFile file;
+	private static UploadedFile file;
 	private String content;
 	private Map<String, List<List<String>>> myMap;
+	private static File targetFile;
+	
+	@Inject
+	private HttpURLConnectionExample request;
 
 	@Inject
 	private ExcelReading reading;
 
-	public void processXLSX() {
+	public void handleFileUpload(FileUploadEvent event) {
+		
+		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+
+		file = event.getFile();
+		targetFile = new File("src/main/resources/targetFile.tmp");
+		try {
+			FileUtils.copyInputStreamToFile(file.getInputstream(), targetFile);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public void processExcelFiles() {
 
 		myMap = new LinkedHashMap<String, List<List<String>>>();
-
-		File f = new File(file.getFileName());
+		
 		try {
-			ZipFile zipFile = new ZipFile(f);
+			ZipFile zipFile = new ZipFile(targetFile);
 			Enumeration<?> enu = zipFile.entries();
 			while (enu.hasMoreElements()) {
-			
+
 				ZipEntry zipEntry = (ZipEntry) enu.nextElement();
-			
+
 				InputStream stream = zipFile.getInputStream(zipEntry);
 				String fileName = zipEntry.getName();
 				myMap.put(fileName, reading.xlsx(stream, fileName));
-			
 
 			}
 			zipFile.close();
@@ -69,7 +91,7 @@ public class FileWrapper implements Serializable {
 
 	public void process() throws IOException {
 		File f = new File(file.getFileName());
-	
+
 		String names = "";
 		try {
 			ZipFile zipFile = new ZipFile(f);
@@ -100,14 +122,6 @@ public class FileWrapper implements Serializable {
 
 	public void setMyMap(Map<String, List<List<String>>> myMap) {
 		this.myMap = myMap;
-	}
-
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	public void setFile(UploadedFile file) {
-		this.file = file;
 	}
 
 	public String getContent() {
