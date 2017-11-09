@@ -15,7 +15,6 @@ import javax.enterprise.inject.Produces;
 
 public class PathToFileProducer {
 	
-	
 	@Produces
 	public String producePath() {
 		
