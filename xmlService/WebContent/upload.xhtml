@@ -22,7 +22,13 @@
 				<p:growl id="messages" showDetail="true" />				
 				
 				<p:separator />
-
+				<h:selectOneMenu value="#{fileWrapper.countryCode}">
+					<f:selectItem itemValue="ALL" itemLabel="ALL" />
+					<f:selectItem itemValue="UK" itemLabel="UK" />
+					<f:selectItem itemValue="CH" itemLabel="CH" />
+					<f:selectItem itemValue="TK" itemLabel="TK" />						
+				</h:selectOneMenu>
+				
 				<p:commandButton value="Show content" ajax="false"
 					actionListener="#{fileWrapper.processExcelFiles}"></p:commandButton>
 					

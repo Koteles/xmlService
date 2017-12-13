@@ -1,0 +1,64 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<meta charset="UTF-8" />
+	<title><ui:insert name="title">Admin page</ui:insert></title>
+	<link rel="stylesheet" href="resources/default.css" />
+</h:head>
+
+<section>
+
+	<h:form enctype="multipart/form-data">
+
+		<p:fileUpload 
+			 	auto="true"
+			mode="advanced" skinSimple="true"
+			fileUploadListener="#{userData.handleFileUpload}"
+			update="selectOneMenu" />
+			
+
+		<p:separator />
+
+		<p:selectCheckboxMenu id="selectOneMenu"
+			value="#{userData.countryCodes}">
+			<f:selectItems value="#{userData.dataList}" />
+		</p:selectCheckboxMenu>
+
+		<p:commandButton value="Get selected isos" ajax="false"
+			actionListener="#{userData.getIso}"></p:commandButton>
+
+		<p:commandButton value="Show content" ajax="false"
+			actionListener="#{fileWrapper.processExcelFiles}"></p:commandButton>
+
+		<p:separator />
+
+		<p:panel id="basic" header="Content" footer="Uploaded files"
+			style="margin-bottom:20px">
+			<h:panelGrid columns="2" cellpadding="10">
+
+				<ui:repeat value="#{fileWrapper.myMap.keySet().toArray()}" var="key">
+					<b>#{key}</b>
+					<br />
+					<ui:repeat var="list" value="#{fileWrapper.myMap[key]}">
+						<ui:repeat var="item" value="#{list}">							
+								#{item}			
+							</ui:repeat>
+						<br />
+					</ui:repeat>
+					<br />
+				</ui:repeat>
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+</section>
+
+</html>

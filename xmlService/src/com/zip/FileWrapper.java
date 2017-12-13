@@ -12,7 +12,6 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -28,8 +27,11 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.service.HttpPOSTClient;
+import com.http.HttpPOSTClient;
+import com.http.RestClient;
+import com.model.ZipPath;
+import com.qualifiers.Path;
+import com.qualifiers.PostUrl;
 
 /**
  * 
@@ -46,30 +48,24 @@ public class FileWrapper implements Serializable {
 	private static UploadedFile file;
 	private String content;
 	private Map<String, List<List<String>>> myMap;
-	private static String pathToFile;
-	private static String postUrl;
-	@Inject
-	private HttpPOSTClient request;
-
-	public void handleFileUpload(FileUploadEvent event) {
-		// after I upload the zip file, this method gets called and the targetFile is
-		// created
+	private String countryCode;
 	
-		final Properties p = new Properties();
-		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		InputStream input = null;
-		try {
-			input = loader.getResourceAsStream("config.properties");
-			p.load(input);
-			pathToFile = p.getProperty("pathToFile");
-			postUrl = p.getProperty("postUrl");
-		}  catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		String filePath = pathToFile.substring(pathToFile.indexOf(":"));
-		filePath = filePath.substring(2, filePath.lastIndexOf("}")-1);
-		
+	@Inject
+	private RestClient postRequest;
+	@Inject
+	private HttpPOSTClient client;
+
+	@Inject
+	@Path
+	private static String path;
+	
+	@Inject
+	@PostUrl
+	private static String postUrl;
+	
+	public void handleFileUpload(FileUploadEvent event) {
+		// after I upload the zip file, this method gets called and the targetFile is created	
+		System.out.println("smth");
 		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 
@@ -80,7 +76,7 @@ public class FileWrapper implements Serializable {
 
 			byte[] buffer = new byte[initialStream.available()];
 			initialStream.read(buffer);
-			File copy = new File(filePath);
+			File copy = new File(path);
 			// FileUtils.copyInputStreamToFile(initialStream, copy);
 			// out.write(buffer);
 			OutputStream outStream = new FileOutputStream(copy);
@@ -95,18 +91,15 @@ public class FileWrapper implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void processExcelFiles() {
-
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		String jsonResponse = null;
-		try {
-			jsonResponse = request.sendPOST(pathToFile, postUrl);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
-		try {			
+		ZipPath zip = new ZipPath();
+		zip.setPathToFile(path);
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String jsonResponse = null;
+
+		try {
+			jsonResponse = postRequest.sendPost(zip, postUrl);
 			myMap = objectMapper.readValue(jsonResponse, LinkedHashMap.class);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -156,6 +149,14 @@ public class FileWrapper implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
 }
